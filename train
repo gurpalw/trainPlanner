@@ -1,0 +1,47 @@
+#!/usr/local/bin/python3
+
+import requests
+import argparse
+import os
+
+apiKey = os.environ['TRAIN_API_KEY']
+
+parser = argparse.ArgumentParser()
+flags = parser.add_argument_group('Required Flags')
+optional = parser.add_argument_group('Optional Flags')
+flags.add_argument('--destination', help='3 letter CRS code for your arrival destination.', required=True)
+flags.add_argument('--departing', help="3 letter CRS code for your departing destination", required=True)
+optional.add_argument("--operator", help="Filter results by train operator. For example: TFL Rail",)
+
+args = parser.parse_args()
+
+departing = args.departing
+destination = args.destination
+operatorFilter = args.operator
+
+response = requests.get('https://api.departureboard.io/api/v1.0/getDeparturesByCRS/{0}/?apiKey={1}&filterStation={2}&numServices=10'.format(departing, apiKey, destination))
+
+if response.status_code != 200:
+    print('Error Response: {}' .format(response.status_code))
+    exit(response.status_code)
+
+data = response.json()
+
+generatedAt = (data['generatedAt'])
+departureInfo = (data['trainServices'])
+
+print("Request generated at: {0}".format(generatedAt[11:19]))
+print("--------------------------")
+print("Trains departing {0} and arriving at {1}".format(departing, destination))
+
+def parseResult():
+    std = service['std']
+    etd = service['etd']
+    platform = service['platform']
+    print('Scheduled: {0} Estimated: {1} Platform: {2}'.format(std, etd, platform))
+
+for service in departureInfo:
+    if operatorFilter == service['operator']:
+        parseResult()
+    elif operatorFilter is None:
+        parseResult()
