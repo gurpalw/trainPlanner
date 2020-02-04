@@ -5,12 +5,12 @@ Requires a .envrc file with a valid apiKey set as an environmental variable.
 
 Example usage:
 
-`python3 train --destination stl --departing pad --operator "TFL Rail"`                                                                                                   
+`python3 train --destination xxx --departing xxx --operator "TFL Rail"`                                                                                                   
 
 ```
 Request generated at: 13:29:59
 --------------------------
-Trains departing pad and arriving at stl
+Trains departing pad and arriving at xxx
 Scheduled: 13:33 Estimated: On time Platform: 12
 Scheduled: 13:47 Estimated: On time Platform: None
 Scheduled: 14:02 Estimated: On time Platform: None
